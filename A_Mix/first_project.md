@@ -39,6 +39,8 @@ This creates some files that help us compile and run the project. The mix.exs fi
 - application function is used to generate the application file which we will run for the project.
 - the deps function which tracks the dependencies for the file.
 
+###Compilation
+
 
 
 `mix compile` compiles the project and outputs a myproject.app file in the _build folder with the specifications defined in mix.exs
@@ -74,3 +76,41 @@ But this is not desired in test or dev environments because knowing where the bu
 Mix defaults to the the :dev environment. the environment can be changed via the MIX_ENV variable.
 
 `MIX_ENV=prod mix compile`
+
+
+
+
+
+
+
+## Processes
+Elixir code runs inside processes. each process is isolated from each other and state cannot be shared between processes(no mutation). These are not core processes or even threads. These are lightweight than both and a lot of processes(tens of thousands to hundreads of thousands) can by run at the same time. These processes maintain concurrency and fault proof ideology.
+
+##### Spawn
+
+This is an inbuilt function for starting a new process in elixir. It takes in a single argument, which is a function which it will execute in a separate process.
+
+`iex>spawn(fn -> 1 + 2 end)`
+`#PID<0.140.0>`
+
+the process is likely dead because once a function is executed, the process dies. spawn returns the pid which can be used to identify proceses.
+
+the program or the iex which runs is a process in itself and can be found the pid with the `self()` command.
+
+to check if a process is alive use `Process.alive?(PID)` where Pid is the pid of our function.
+
+
+*messages*
+we can send messages to processes with the send function and recieve them with the recieve function. these are like js events.
+send takes two parameters, the PID and the message, receive goes through the mailbox and gives the output if any of the clauses match. guards can also be given to recieve function.
+
+`send(self(),{ :hello, "world"})`<br><br>
+`recieve do`<br>
+  `{ :hello, value } -> value`<br>
+  `{ :nope, value } -> "not hello"`<br>
+  `after`<br>
+    `1_000 -> "nothing after 1s"`<br>
+`end`
+
+*Links*
+mostly processes are linked in elixir. Generally when a normal process fails, the main process is not linked with the failed process and continues to run. But when the processes are linked, the failed process also fails the running process. this is called failure propagation. its done by Process.link/1 function. or you can spawn a new process linked with the current one with spawn_link. processes are separate in themselves, and so wont corrupt the state of other Processes. But links allow us to create a relationship with other processes.
