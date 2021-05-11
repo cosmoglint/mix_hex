@@ -129,8 +129,8 @@ state is data that needs to be accessed. the best way to store state is in proce
 
 
 *Agents*
-If all we need from a process is to store state agents are perfect. start an agent with Agent.start_link(fn). this returns a tuple { :ok, <PID> }.
+If all we need from a process is to store state agents are perfect. start an agent with Agent.start_link(fn) where function sets the initial state of the state. this returns a tuple { :ok, <PID> }.
 Agent has the following useful functions
 - Agent.update/3 : first argument is the PID, second one is the function. the second argument function takes in the state of the agent itself and then the returned value is updated as the state. the third argument is the timeout, which is by default 5000
 - Agent.get/3 : this function gets the state of the agent. first argument is the PId, second one is the function, this function also takes the current state as argument and can return it to us with the formatting or changes we need or if the same argument is returned the current state is returned. third argument is the timeout.
-- Agent.stop/3 : This function stops the process thats running. first argument is the pid. the second one is the reason which is by default :normal. the third argument is timeout, by default infity.
+- Agent.stop/3 : This function stops the process thats running. first argument is the pid. the second one is the reason which is by default :normal. the third argument is timeout, by default :infity.
