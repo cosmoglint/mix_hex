@@ -112,5 +112,25 @@ send takes two parameters, the PID and the message, receive goes through the mai
     `1_000 -> "nothing after 1s"`<br>
 `end`
 
+the flush/0 function is useful and prints all the messages in the mailbox
+
 *Links*
-mostly processes are linked in elixir. Generally when a normal process fails, the main process is not linked with the failed process and continues to run. But when the processes are linked, the failed process also fails the running process. this is called failure propagation. its done by Process.link/1 function. or you can spawn a new process linked with the current one with spawn_link. processes are separate in themselves, and so wont corrupt the state of other Processes. But links allow us to create a relationship with other processes.
+mostly processes are linked in elixir. Generally when a normal process fails, the main process is not linked with the failed process and continues to run. But when the processes are linked, the failed process also fails the running process. this is called failure propagation. its done by Process.link/1 function. or you can spawn a new process linked with the current one with spawn_link. processes are separate in themselves, and so wont corrupt the state of other Processes. But links allow us to create a relationship with other processes or supervisors.
+
+
+*Tasks*
+Tasks are built on top of processes for better error reports and introspection.
+We can use tasks and they will return a tuple of {:ok, pid} rather than just pid. This enables us to use tasks in supervision trees. task produces :async and :await.
+
+
+*State*
+state is data that needs to be accessed. the best way to store state is in processes that loop infinitely and wait for messages to occur and then send the messages. (more at https://elixir-lang.org/getting-started/processes.html#state)
+
+
+
+*Agents*
+If all we need from a process is to store state agents are perfect. start an agent with Agent.start_link(fn). this returns a tuple { :ok, <PID> }.
+Agent has the following useful functions
+- Agent.update/3 : first argument is the PID, second one is the function. the second argument function takes in the state of the agent itself and then the returned value is updated as the state. the third argument is the timeout, which is by default 5000
+- Agent.get/3 : this function gets the state of the agent. first argument is the PId, second one is the function, this function also takes the current state as argument and can return it to us with the formatting or changes we need or if the same argument is returned the current state is returned. third argument is the timeout.
+- Agent.stop/3 : This function stops the process thats running. first argument is the pid. the second one is the reason which is by default :normal. the third argument is timeout, by default infity.
