@@ -7,6 +7,11 @@ defmodule MyProject.BucketTest do
 
     MyProject.Bucket.put(bucket, "milk", 3)
     assert MyProject.Bucket.get(bucket, "milk") == 3
+
+    # this test asserts if the delete funcitonality is working
+    assert MyProject.Bucket.delete(bucket, "milk") == 3
+    assert MyProject.Bucket.get(bucket, "milk") == nil
+
   end
 end
 
