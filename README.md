@@ -140,3 +140,5 @@ Agent has the following useful functions
 
 
 in the test file, we have async: true. use this only if the state change happens separately in order to avoid race conditions. Here the ExUnit.Case is responsible for testing the stuff and asserting the results. it provides some useful functions like test/2 macro.
+Also make sure the module where you write the functions to test are .ex and not .exs( i dunno why I am researching it RIGHT now )
+always give a documentation for any function you write with the @doc decorator(atleast I think its a decorator dont @ me). syntax for documentation is `@doc """ This function does this thing """`
