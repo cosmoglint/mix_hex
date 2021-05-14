@@ -142,3 +142,8 @@ Agent has the following useful functions
 in the test file, we have async: true. use this only if the state change happens separately in order to avoid race conditions. Here the ExUnit.Case is responsible for testing the stuff and asserting the results. it provides some useful functions like test/2 macro.
 Also make sure the module where you write the functions to test are .ex and not .exs( i dunno why I am researching it RIGHT now )
 always give a documentation for any function you write with the @doc decorator(atleast I think its a decorator dont @ me). syntax for documentation is `@doc """ This function does this thing """`
+
+
+### The client server dichotomy
+
+It is important to know the distiction between clients and servers in Agents. Everything in the delete function happens within the agent. It performs the actions, recieves and sends the results. Hence we call the Agent as the server, and the process where we are running as the client. This is crucial because, when a server is run, if there is a heavy process to be done on the server, it blocks all other results till that particular job is done. 
