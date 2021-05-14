@@ -146,4 +146,37 @@ always give a documentation for any function you write with the @doc decorator(a
 
 ### The client server dichotomy
 
-It is important to know the distiction between clients and servers in Agents. Everything in the delete function happens within the agent. It performs the actions, recieves and sends the results. Hence we call the Agent as the server, and the process where we are running as the client. This is crucial because, when a server is run, if there is a heavy process to be done on the server, it blocks all other results till that particular job is done. 
+It is important to know the distiction between clients and servers in Agents. Everything in the delete function happens within the agent. It performs the actions, recieves and sends the results. Hence we call the Agent as the server, and the process where we are running as the client. This is crucial because, when a server is run, if there is a heavy process to be done on the server, it blocks all other results till that particular job is done.
+Usually servers act just do small and quick stuff while clients handle the big chunky jobs
+
+
+
+
+### The GenServer
+
+Back in processes we saw that we can name functions with atoms and assign a pid to them with the syntax   `Agent.start_link(fn -> %{} end, name: :shopping)` and we can get the id of shopping by fetching :shopping. But this is a bad idea because atoms are not garbage collected. so if we convert user input into atoms we will run out of memory and crash the VM. So we write custom name stores. This is where genserver makes it easy by providing name stores for us. It also provides server callbacks making it easier for us. With the put function we wrote, we can split it into,
+  `def put(bucket, key, value) do
+    # this is the client code
+    Agent.update(bucket, fn state ->
+      # this is the server code
+      Map.put(state, key, value)
+       end)
+
+      #back to client
+  end
+  `
+
+In a genserver the above code would look like.
+
+
+`
+#client code
+def put(bucket, key, value) do
+  # Send the server a :put "instruction"
+  GenServer.call(bucket, {:put, key, value})
+end
+
+# Server callback
+def handle_call({:put, key, value}, _from, state) do
+  {:reply, :ok, Map.put(state, key, value)}
+end`
