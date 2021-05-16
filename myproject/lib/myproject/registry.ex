@@ -2,6 +2,28 @@ defmodule MyProject.Registry do
   use GenServer
 
   # add client api Here
+  @doc"""
+  start the registry
+  """
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, :ok, opts)
+  end
+
+
+  @doc"""
+  looks up the bucket for 'name' stored in 'server',
+  returns {:ok, pid} if  bucket exists, :error otherwise
+  """
+  def lookup(server,name) do
+    GenServer.call(server, {:lookup, name})
+  end
+
+  @doc"""
+  ensures if a bucket with the given name exists
+  """
+  def create(server,name, value) do
+
+  end
 
   @impl true
   def init(:ok) do
