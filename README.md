@@ -180,3 +180,13 @@ end
 def handle_call({:put, key, value}, _from, state) do
   {:reply, :ok, Map.put(state, key, value)}
 end`
+
+
+
+when writing genserver code we use the @impl true which tells the compiler that its a particular callback.
+
+calling a Genserver.start_link(object, :ok) returns :ok and the pid.
+
+
+There are two types of requests that can be sent to a genserver, a call or a cast.
+a call is synchronous, so the server waits till the function is done before sending a response. Cast is asynchronous and can handle multiple funcitons simultaneously, here the server wont send back a response so the client wont wait for one.

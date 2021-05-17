@@ -22,7 +22,7 @@ defmodule MyProject.Registry do
   ensures if a bucket with the given name exists
   """
   def create(server,name, value) do
-
+    GenServer.cast(server, {:create, name})
   end
 
   @impl true
