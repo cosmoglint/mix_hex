@@ -190,3 +190,8 @@ calling a Genserver.start_link(object, :ok) returns :ok and the pid.
 
 There are two types of requests that can be sent to a genserver, a call or a cast.
 a call is synchronous, so the server waits till the function is done before sending a response. Cast is asynchronous and can handle multiple funcitons simultaneously, here the server wont send back a response so the client wont wait for one.
+
+
+the `__MODULE__` stands for the current module we are in.
+It is general practice in client calls, where in GenServer.call(pid, {}) the first argument is the pid and the second argument is a tuple, where the first element is an atom with the action and the remaining are stuff to be sent. Also the tuple must match the first argument of the callback functions.
+here the reply happens in the format { :reply, thereply, newstate }, here the :reply tells the server to send back a reply and thereply is the actual reply it sends, and the newstate is the updated state of the bucket.
